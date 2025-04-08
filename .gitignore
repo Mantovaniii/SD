@@ -1,0 +1,16 @@
+# Ignorar pastas automáticas do Quartus
+db/
+incremental_db/
+output_files/
+
+# Ignorar arquivos de build
+*.rpt
+*.smsg
+*.qws
+*.bak
+*.heic
+*.png
+*.mif
+*.qpf
+*.qsf
+*.bdf
