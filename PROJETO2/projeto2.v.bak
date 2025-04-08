@@ -1,0 +1,108 @@
+// Copyright (C) 2024  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and any partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details, at
+// https://fpgasoftware.intel.com/eula.
+
+// PROGRAM		"Quartus Prime"
+// VERSION		"Version 23.1std.1 Build 993 05/14/2024 SC Lite Edition"
+// CREATED		"Thu Nov  7 11:14:24 2024"
+
+module projeto2(
+	KEY,
+	SW,
+	LEDR
+);
+
+
+input wire	[1:0] KEY;
+input wire	[1:0] SW;
+output wire	[0:0] LEDR;
+
+wire	AND1;
+wire	AND2;
+wire	AND3;
+wire	AND4;
+wire	AND5;
+wire	AND6;
+wire	CLK;
+wire	D0;
+wire	D1;
+wire	NX0;
+wire	NX1;
+wire	OR1;
+reg	Q0;
+reg	Q1;
+wire	RST;
+wire	X0;
+wire	X1;
+
+
+
+
+assign	AND1 = Q1 & Q0;
+
+
+always@(posedge CLK or negedge RST)
+begin
+if (!RST)
+	begin
+	Q0 <= 0;
+	end
+else
+	begin
+	Q0 <= D0;
+	end
+end
+
+
+always@(posedge CLK or negedge RST)
+begin
+if (!RST)
+	begin
+	Q1 <= 0;
+	end
+else
+	begin
+	Q1 <= D1;
+	end
+end
+
+assign	NX1 =  ~X1;
+
+assign	NX0 =  ~X0;
+
+assign	AND2 = X1 & Q1 & X0;
+
+assign	AND4 = NX1 & X0;
+
+assign	AND3 = NX0 & NX1 & Q0;
+
+assign	AND6 = X1 & NX0 & Q0;
+
+assign	AND5 = NX1 & NX0 & Q1;
+
+assign	OR1 = AND2 | AND1;
+
+assign	D0 = AND3 | AND4 | OR1;
+
+assign	D1 = AND5 | AND6 | OR1;
+
+assign	LEDR = AND1;
+assign	RST = KEY[0];
+assign	X1 = SW[1];
+assign	CLK = KEY[1];
+assign	RST = KEY[0];
+assign	X0 = SW[0];
+assign	X1 = SW[1];
+
+endmodule

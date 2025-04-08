@@ -1,0 +1,11 @@
+
+State Machine - |Block1|processador:inst|state
+Name state.execute_load state.execute_store2 state.execute_store state.execute_add state.decode state.fetch state.reset_pc state.execute_jump 
+state.reset_pc 0 0 0 0 0 0 0 0 
+state.fetch 0 0 0 0 0 1 1 0 
+state.decode 0 0 0 0 1 0 1 0 
+state.execute_add 0 0 0 1 0 0 1 0 
+state.execute_store 0 0 1 0 0 0 1 0 
+state.execute_store2 0 1 0 0 0 0 1 0 
+state.execute_load 1 0 0 0 0 0 1 0 
+state.execute_jump 0 0 0 0 0 0 1 1 

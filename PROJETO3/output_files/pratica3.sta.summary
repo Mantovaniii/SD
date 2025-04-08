@@ -1,0 +1,101 @@
+------------------------------------------------------------
+Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1100mV 85C Model Setup 'CLOCK_50'
+Slack : -4.399
+TNS   : -21.016
+
+Type  : Slow 1100mV 85C Model Setup 'counter:inst2|lpm_counter:LPM_COUNTER_component|cntr_ijh:auto_generated|counter_reg_bit[17]'
+Slack : -1.584
+TNS   : -30.361
+
+Type  : Slow 1100mV 85C Model Hold 'CLOCK_50'
+Slack : 0.373
+TNS   : 0.000
+
+Type  : Slow 1100mV 85C Model Hold 'counter:inst2|lpm_counter:LPM_COUNTER_component|cntr_ijh:auto_generated|counter_reg_bit[17]'
+Slack : 0.504
+TNS   : 0.000
+
+Type  : Slow 1100mV 85C Model Minimum Pulse Width 'counter:inst2|lpm_counter:LPM_COUNTER_component|cntr_ijh:auto_generated|counter_reg_bit[17]'
+Slack : -2.174
+TNS   : -54.101
+
+Type  : Slow 1100mV 85C Model Minimum Pulse Width 'CLOCK_50'
+Slack : -0.394
+TNS   : -9.519
+
+Type  : Slow 1100mV 0C Model Setup 'CLOCK_50'
+Slack : -4.557
+TNS   : -22.539
+
+Type  : Slow 1100mV 0C Model Setup 'counter:inst2|lpm_counter:LPM_COUNTER_component|cntr_ijh:auto_generated|counter_reg_bit[17]'
+Slack : -1.491
+TNS   : -30.222
+
+Type  : Slow 1100mV 0C Model Hold 'CLOCK_50'
+Slack : 0.371
+TNS   : 0.000
+
+Type  : Slow 1100mV 0C Model Hold 'counter:inst2|lpm_counter:LPM_COUNTER_component|cntr_ijh:auto_generated|counter_reg_bit[17]'
+Slack : 0.492
+TNS   : 0.000
+
+Type  : Slow 1100mV 0C Model Minimum Pulse Width 'counter:inst2|lpm_counter:LPM_COUNTER_component|cntr_ijh:auto_generated|counter_reg_bit[17]'
+Slack : -2.174
+TNS   : -53.935
+
+Type  : Slow 1100mV 0C Model Minimum Pulse Width 'CLOCK_50'
+Slack : -0.394
+TNS   : -10.111
+
+Type  : Fast 1100mV 85C Model Setup 'CLOCK_50'
+Slack : -3.127
+TNS   : -5.795
+
+Type  : Fast 1100mV 85C Model Setup 'counter:inst2|lpm_counter:LPM_COUNTER_component|cntr_ijh:auto_generated|counter_reg_bit[17]'
+Slack : -0.781
+TNS   : -11.469
+
+Type  : Fast 1100mV 85C Model Hold 'CLOCK_50'
+Slack : 0.199
+TNS   : 0.000
+
+Type  : Fast 1100mV 85C Model Hold 'counter:inst2|lpm_counter:LPM_COUNTER_component|cntr_ijh:auto_generated|counter_reg_bit[17]'
+Slack : 0.214
+TNS   : 0.000
+
+Type  : Fast 1100mV 85C Model Minimum Pulse Width 'counter:inst2|lpm_counter:LPM_COUNTER_component|cntr_ijh:auto_generated|counter_reg_bit[17]'
+Slack : -2.174
+TNS   : -49.530
+
+Type  : Fast 1100mV 85C Model Minimum Pulse Width 'CLOCK_50'
+Slack : -0.329
+TNS   : -1.910
+
+Type  : Fast 1100mV 0C Model Setup 'CLOCK_50'
+Slack : -2.639
+TNS   : -4.945
+
+Type  : Fast 1100mV 0C Model Setup 'counter:inst2|lpm_counter:LPM_COUNTER_component|cntr_ijh:auto_generated|counter_reg_bit[17]'
+Slack : -0.600
+TNS   : -9.942
+
+Type  : Fast 1100mV 0C Model Hold 'CLOCK_50'
+Slack : 0.190
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Hold 'counter:inst2|lpm_counter:LPM_COUNTER_component|cntr_ijh:auto_generated|counter_reg_bit[17]'
+Slack : 0.191
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Minimum Pulse Width 'counter:inst2|lpm_counter:LPM_COUNTER_component|cntr_ijh:auto_generated|counter_reg_bit[17]'
+Slack : -2.174
+TNS   : -49.374
+
+Type  : Fast 1100mV 0C Model Minimum Pulse Width 'CLOCK_50'
+Slack : -0.332
+TNS   : -1.869
+
+------------------------------------------------------------

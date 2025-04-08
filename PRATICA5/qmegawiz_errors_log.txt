@@ -1,0 +1,19 @@
+
+
+C:/Users/834054/Downloads/pratica4-20241210T111608Z-001/pratica4/video_PLL.vhd
+
+Dec 10 08AM:19:51>: Error in CNX file format.
+
+Error messages are listed in file
+C:/Users/834054/Downloads/pratica4-20241210T111608Z-001/pratica4/video_PLL.cnxerr.
+
+Can't create the custom megafunction variation file(s)
+
+C:/Users/834730/Downloads/pratica5/pratica5/video_PLL.vhd
+
+Jan 23 11AM:19:54>: Error in CNX file format.
+
+Error messages are listed in file
+C:/Users/834730/Downloads/pratica5/pratica5/video_PLL.cnxerr.
+
+Can't create the custom megafunction variation file(s)

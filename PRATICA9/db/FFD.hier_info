@@ -1,0 +1,9 @@
+|FFD
+Q <= inst2.DB_MAX_OUTPUT_PORT_TYPE
+D => inst1.IN0
+D => inst.IN1
+clk => inst10.IN1
+clk => inst.IN0
+~Q <= inst3.DB_MAX_OUTPUT_PORT_TYPE
+
+

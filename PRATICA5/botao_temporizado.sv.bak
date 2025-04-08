@@ -1,0 +1,24 @@
+module botao_temporizado(
+    input wire clk,        // Clock
+    input wire reset,      // Reset
+    input wire botao,      // Entrada do botão
+    output reg estado      // Saída processada do botão
+);
+    parameter TEMPO = 1000000; // 20 ms para debouncing
+    reg [19:0] contador = 0;
+
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            contador <= 0;
+            estado <= 0;
+        end else if (botao) begin
+            if (contador < TEMPO)
+                contador <= contador + 1;
+            else
+                estado <= 1;
+        end else begin
+            contador <= 0;
+            estado <= 0;
+        end
+    end
+endmodule

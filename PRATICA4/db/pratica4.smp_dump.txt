@@ -1,0 +1,5 @@
+
+State Machine - |pratica4|TicTacToe:inst|current_player
+Name current_player.10 
+current_player.01 0 
+current_player.10 1 

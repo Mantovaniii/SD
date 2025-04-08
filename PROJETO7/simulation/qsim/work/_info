@@ -1,0 +1,43 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\Users\832297\Desktop\processador\simulation\qsim
+vprocessador
+Z1 !s100 eH_ndZaV``K_SAhj80o=e0
+Z2 I<6K6hDNc?63ViVh2V^3R^3
+Z3 V4R^Ec>YB;n6T^[3R6Xl=L3
+Z4 dC:\Users\832365\Downloads\processador\processador\simulation\qsim
+Z5 w1739276558
+Z6 8processador.vo
+Z7 Fprocessador.vo
+L0 32
+Z8 OV;L;10.1d;51
+r1
+31
+Z9 !s90 -work|work|processador.vo|
+Z10 o-work work -O0
+!i10b 1
+!s85 0
+Z11 !s108 1739276559.469000
+Z12 !s107 processador.vo|
+!s101 -O0
+vprocessador_vlg_vec_tst
+!i10b 1
+!s100 B4TK0=i3<:A5mdJUo_gUg2
+I^fSMg3O07`eVzamPcaF0g0
+Z13 VTHSaPDKg4Wj>2_O^anzBd2
+R4
+w1739276557
+Z14 8Waveform.vwf.vt
+Z15 FWaveform.vwf.vt
+L0 30
+R8
+r1
+!s85 0
+31
+!s108 1739276559.532000
+!s107 Waveform.vwf.vt|
+Z16 !s90 -work|work|Waveform.vwf.vt|
+!s101 -O0
+R10

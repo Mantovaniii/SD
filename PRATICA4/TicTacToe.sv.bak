@@ -1,0 +1,100 @@
+module TicTacToe (
+    input clk, reset, player,        // Controle do clock, reset, e qual jogador (0 ou 1)
+    input [0:3] position,            // Posição onde o jogador coloca seu símbolo (0-8)
+    output reg win1, win2, draw, game_over, // Flag de vencedor, empate e fim de jogo
+    output reg [0:17] board,         // Representação do tabuleiro de 3x3
+    output reg [0:8] leds            // LEDs para representar o estado do tabuleiro
+);
+
+// Definir os estados do tabuleiro, onde 0 = vazio, 1 = jogador 1 (X), 2 = jogador 2 (O)
+reg [2:0] game_board [0:8];
+
+// Inicializar os sinais
+integer i;
+reg [2:0] current_player;           // Jogador atual (1 ou 2)
+
+// Função para verificar se há um vencedor
+function check_winner();
+    input [2:0] board[0:8];
+    begin
+        // Checar todas as linhas, colunas e diagonais
+        // Linhas
+        if (board[0] == board[1] && board[1] == board[2] && board[0] != 0)
+            check_winner = board[0];
+        else if (board[3] == board[4] && board[4] == board[5] && board[3] != 0)
+            check_winner = board[3];
+        else if (board[6] == board[7] && board[7] == board[8] && board[6] != 0)
+            check_winner = board[6];
+        // Colunas
+        else if (board[0] == board[3] && board[3] == board[6] && board[0] != 0)
+            check_winner = board[0];
+        else if (board[1] == board[4] && board[4] == board[7] && board[1] != 0)
+            check_winner = board[1];
+        else if (board[2] == board[5] && board[5] == board[8] && board[2] != 0)
+            check_winner = board[2];
+        // Diagonais
+        else if (board[0] == board[4] && board[4] == board[8] && board[0] != 0)
+            check_winner = board[0];
+        else if (board[2] == board[4] && board[4] == board[6] && board[2] != 0)
+            check_winner = board[2];
+        else
+            check_winner = 0; // Nenhum vencedor
+    end
+endfunction
+
+// Inicialização e controle do jogo
+always @(posedge clk or posedge reset) begin
+    if (reset) begin
+        // Resetar o estado do tabuleiro
+        for (i = 0; i < 9; i = i + 1) begin
+            game_board[i] <= 0;  // 0 representa vazio
+        end
+        win1 <= 0;
+        win2 <= 0;
+        draw <= 0;
+        game_over <= 0;
+        leds <= 9'b0; // LEDs apagados
+        current_player <= 1; // Jogador 1 começa
+    end
+    else if (!game_over) begin
+        // Verificar se a posição é válida (entre 0 e 8 e ainda não ocupada)
+        if (position >= 0 && position < 9 && game_board[position] == 0) begin
+            game_board[position] <= current_player; // Atribui a jogada ao tabuleiro
+            // Atualizar os LEDs para mostrar a jogada
+            leds[position] <= 1;
+
+            // Verificar vitória
+            if (check_winner(game_board) == 1) begin
+                win1 <= 1;
+                game_over <= 1;
+            end
+            else if (check_winner(game_board) == 2) begin
+                win2 <= 1;
+                game_over <= 1;
+            end
+            // Verificar empate
+            else if (game_board[0] != 0 && game_board[1] != 0 && game_board[2] != 0 &&
+                     game_board[3] != 0 && game_board[4] != 0 && game_board[5] != 0 &&
+                     game_board[6] != 0 && game_board[7] != 0 && game_board[8] != 0) begin
+                draw <= 1;
+                game_over <= 1;
+            end
+
+            // Alternar jogador
+            current_player <= (current_player == 1) ? 2 : 1; 
+        end
+    end
+end
+
+// Atualizar o estado do tabuleiro para a saída 'board' (representação de 3x3 em 18 bits)
+always @(*) begin
+    board[0:2] = game_board[0]; 
+    board[3:5] = game_board[1]; 
+    board[6:8] = game_board[2];
+    board[9:11] = game_board[3]; 
+    board[12:14] = game_board[4]; 
+    board[15:17] = game_board[5];
+    // Para simplicidade, podemos mapear cada posição em 3 bits (0 para vazio, 1 ou 2 para os jogadores)
+end
+
+endmodule

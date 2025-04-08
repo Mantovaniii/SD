@@ -1,0 +1,41 @@
+module trex_game(
+    input wire clk,           // Clock
+    input wire reset,         // Reset
+    input wire botao,         // Botão de pular
+    input wire [9:0] pixel_x, // Posição X do pixel
+    input wire [9:0] pixel_y, // Posição Y do pixel
+    output wire [3:0] red,    // Cor vermelha
+    output wire [3:0] green,  // Cor verde
+    output wire [3:0] blue    // Cor azul
+);
+    // Parâmetros do T-Rex
+    localparam TREX_X = 50;
+    localparam TREX_Y = 400;
+    localparam TREX_WIDTH = 16;
+    localparam TREX_HEIGHT = 16;
+
+    reg [9:0] trex_y = TREX_Y; // Posição vertical do T-Rex
+    reg jumping = 0;           // Estado de pulo
+
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            trex_y <= TREX_Y;
+            jumping <= 0;
+        end else if (botao && ~jumping) begin
+            jumping <= 1;
+        end else if (jumping) begin
+            if (trex_y > TREX_Y - 50)
+                trex_y <= trex_y - 2; // Sobe
+            else
+                jumping <= 0;
+        end else if (trex_y < TREX_Y) begin
+            trex_y <= trex_y + 2; // Desce
+        end
+    end
+
+    // Renderização do T-Rex
+    assign red = (pixel_x >= TREX_X && pixel_x < TREX_X + TREX_WIDTH &&
+                  pixel_y >= trex_y && pixel_y < trex_y + TREX_HEIGHT) ? 4'hF : 4'h0;
+    assign green = red;
+    assign blue = red;
+endmodule

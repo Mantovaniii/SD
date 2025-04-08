@@ -1,0 +1,86 @@
+module vga_display (
+    input pclk,             // Clock do pixel (gerado pelo PLL)
+    input [9:0] h,          // Contador horizontal
+    input [9:0] v,          // Contador vertical
+    input [17:0] tab,       // Representação do tabuleiro
+    output reg vga_r,       // Saída do canal vermelho
+    output reg vga_g,       // Saída do canal verde
+    output reg vga_b,       // Saída do canal azul
+    output reg hsync,       // Sinal de sincronização horizontal
+    output reg vsync        // Sinal de sincronização vertical
+);
+
+// Tamanho do display (640x480 VGA)
+parameter SCREEN_WIDTH = 640;
+parameter SCREEN_HEIGHT = 480;
+parameter BOARD_SIZE = 3; // Tamanho do tabuleiro 3x3
+
+// Posições para as linhas do tabuleiro
+parameter LINE_WIDTH = 10; // Largura da linha para as bordas do tabuleiro
+
+// Desenha a borda do tabuleiro
+wire draw_board = (h < LINE_WIDTH || h > SCREEN_WIDTH - LINE_WIDTH || 
+                   v < LINE_WIDTH || v > SCREEN_HEIGHT - LINE_WIDTH);
+
+// Posições das linhas do tabuleiro (colocando as linhas para dividir o tabuleiro)
+wire draw_horizontal_line = (v > (SCREEN_HEIGHT / 3) && v < (SCREEN_HEIGHT / 3) + LINE_WIDTH) ||
+                             (v > (2 * SCREEN_HEIGHT / 3) && v < (2 * SCREEN_HEIGHT / 3) + LINE_WIDTH);
+
+wire draw_vertical_line = (h > (SCREEN_WIDTH / 3) && h < (SCREEN_WIDTH / 3) + LINE_WIDTH) ||
+                           (h > (2 * SCREEN_WIDTH / 3) && h < (2 * SCREEN_WIDTH / 3) + LINE_WIDTH);
+
+// Posição de cada célula no tabuleiro
+integer row, col;
+always @* begin
+    row = v / (SCREEN_HEIGHT / 3);
+    col = h / (SCREEN_WIDTH / 3);
+end
+
+// Desenhar os X e O no tabuleiro
+wire draw_X = tab[row*3 + col] == 2'b01;  // Representa X
+wire draw_O = tab[row*3 + col] == 2'b10;  // Representa O
+
+// Desenhando o X e O
+always @(posedge pclk) begin
+    // Definindo a cor da linha de acordo com a posição (bordas, X ou O)
+    if (draw_board) begin
+        vga_r = 1;
+        vga_g = 1;
+        vga_b = 1; // Cor branca para borda
+    end else if (draw_horizontal_line || draw_vertical_line) begin
+        vga_r = 0;
+        vga_g = 1;
+        vga_b = 0; // Cor verde para as linhas do tabuleiro
+    end else if (draw_X) begin
+        vga_r = 1;
+        vga_g = 0;
+        vga_b = 0; // Cor vermelha para X
+    end else if (draw_O) begin
+        vga_r = 0;
+        vga_g = 0;
+        vga_b = 1; // Cor azul para O
+    end else begin
+        vga_r = 0;
+        vga_g = 0;
+        vga_b = 0; // Cor preta para o fundo
+    end
+end
+
+// Gerando sinais de sincronização VGA
+always @(posedge pclk) begin
+    // Horizontal Sync (com base em H_SYNC)
+    if (h < 656) begin
+        hsync = 0;
+    end else begin
+        hsync = 1;
+    end
+
+    // Vertical Sync (com base em V_SYNC)
+    if (v < 490) begin
+        vsync = 0;
+    end else begin
+        vsync = 1;
+    end
+end
+
+endmodule

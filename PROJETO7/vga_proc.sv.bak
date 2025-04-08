@@ -1,0 +1,9 @@
+module vga_proc(
+    input wire clk,            // Clock
+    input wire reset,          // Reset
+	 input [7:0] program_counter;
+    input [15:0] register_A, memory_data_register_out, instruction_register;
+    input wire [9:0] pixel_x,  // Posição X do pixel
+    input wire [9:0] pixel_y,  // Posição Y do pixel
+    output reg color_out       // Saída de cor
+);

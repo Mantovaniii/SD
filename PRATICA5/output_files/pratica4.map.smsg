@@ -1,0 +1,2 @@
+Warning (10268): Verilog HDL information at trex_game.sv(457): always construct contains both blocking and non-blocking assignments File: C:/Users/834054/Downloads/pratica5-20250218T172040Z-001/pratica5/trex_game.sv Line: 457
+Info (10281): Verilog HDL Declaration information at trex_game.sv(21): object "TREX_Y" differs only in case from object "trex_y" in the same scope File: C:/Users/834054/Downloads/pratica5-20250218T172040Z-001/pratica5/trex_game.sv Line: 21

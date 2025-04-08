@@ -1,0 +1,60 @@
+module StockCarGame(
+    input logic clock_50Mhz,  // Clock de 50 MHz da FPGA
+    input logic reset,        // Reset do jogo
+    input logic move_left,    // Botão para mover o carro para a esquerda
+    input logic move_right,   // Botão para mover o carro para a direita
+    output logic [3:0] red_out,   // Saída de cor VGA (vermelho)
+    output logic [3:0] green_out, // Saída de cor VGA (verde)
+    output logic [3:0] blue_out,  // Saída de cor VGA (azul)
+    output logic horiz_sync_out,  // Sinal de sincronização horizontal
+    output logic vert_sync_out    // Sinal de sincronização vertical
+);
+
+    // Parâmetros para definição do carro do jogador
+    localparam CAR_WIDTH = 40;
+    localparam CAR_HEIGHT = 20;
+    localparam SCREEN_WIDTH = 640;
+    localparam SCREEN_HEIGHT = 480;
+
+    // Posição inicial do carro do jogador
+    logic [9:0] car_x = SCREEN_WIDTH / 2 - CAR_WIDTH / 2;
+    logic [9:0] car_y = SCREEN_HEIGHT - 50;
+
+    // Instanciação do módulo VGA_SYNC
+    logic video_on;
+    logic [9:0] pixel_row, pixel_column;
+    VGA_SYNC vga_sync_inst (
+        .clock_50Mhz(clock_50Mhz),
+        .red(1'b0), .green(1'b0), .blue(1'b0),
+        .red_out(red_out), .green_out(green_out), .blue_out(blue_out),
+        .horiz_sync_out(horiz_sync_out),
+        .vert_sync_out(vert_sync_out),
+        .video_on(video_on),
+        .pixel_row(pixel_row), .pixel_column(pixel_column)
+    );
+
+    // Lógica para desenhar o carro do jogador na tela
+    always_ff @(posedge clock_50Mhz) begin
+        if (reset) begin
+            car_x <= SCREEN_WIDTH / 2 - CAR_WIDTH / 2;
+        end else begin
+            if (move_left && car_x > 60) car_x <= car_x - 5;
+            if (move_right && car_x < SCREEN_WIDTH - 60 - CAR_WIDTH) car_x <= car_x + 5;
+        end
+    end
+
+    // Definição da cor do carro do jogador
+    always_comb begin
+        if (video_on && pixel_row >= car_y && pixel_row < car_y + CAR_HEIGHT &&
+            pixel_column >= car_x && pixel_column < car_x + CAR_WIDTH) begin
+            red_out = 4'hF;
+            green_out = 4'h0;
+            blue_out = 4'h0;
+        end else begin
+            red_out = 4'h0;
+            green_out = 4'h0;
+            blue_out = 4'h0;
+        end
+    end
+
+endmodule

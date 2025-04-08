@@ -1,0 +1,5 @@
+
+State Machine - |pratica4|trex_game:inst|estado_pulo
+Name estado_pulo.DESCENDO 
+estado_pulo.NO_CHAO 0 
+estado_pulo.DESCENDO 1 

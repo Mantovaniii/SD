@@ -1,0 +1,142 @@
+module train_state_machine_with_vga(
+    input logic clk,               // Clock signal
+    input logic reset,             // Reset signal
+    input logic S1, S2, S3, S4,    // Sensor inputs
+    output logic DA0, DB0,         // Outputs to control trains
+    output logic Sw1, Sw2,         // Outputs to control switches
+    output logic [7:0] VGA_R,      // VGA Red output
+    output logic [7:0] VGA_G,      // VGA Green output
+    output logic [7:0] VGA_B,      // VGA Blue output
+    output logic VGA_HS,           // VGA Horizontal Sync
+    output logic VGA_VS            // VGA Vertical Sync
+);
+
+    // State encoding
+    typedef enum logic [2:0] {
+        ABout = 3'b000,
+        Ain   = 3'b001,
+        Bin   = 3'b010,
+        Bstop = 3'b011,
+        Astop = 3'b100
+    } state_t;
+
+    state_t current_state, next_state;
+
+    // Internal signals for VGA
+    logic [9:0] pixel_row;
+    logic [9:0] pixel_column;
+    logic video_on;
+    logic pixel_clock_internal;
+
+    // Instantiate the Video PLL
+    video_PLL video_pll_inst (
+        .inclk0(clk),                 // Input clock
+        .c0(pixel_clock_internal)     // Pixel clock output (set to 25.175 MHz in PLL configuration)
+    );
+
+    // Correct VGA timing parameters for 640x480 @ 60 Hz
+    localparam int H_DISPLAY = 640;          // Horizontal display area
+    localparam int H_FRONT_PORCH = 16;       // Front porch
+    localparam int H_SYNC_PULSE = 96;        // Sync pulse
+    localparam int H_BACK_PORCH = 48;        // Back porch
+    localparam int H_TOTAL = H_DISPLAY + H_FRONT_PORCH + H_SYNC_PULSE + H_BACK_PORCH;
+
+    localparam int V_DISPLAY = 480;          // Vertical display area
+    localparam int V_FRONT_PORCH = 10;       // Front porch
+    localparam int V_SYNC_PULSE = 2;         // Sync pulse
+    localparam int V_BACK_PORCH = 33;        // Back porch
+    localparam int V_TOTAL = V_DISPLAY + V_FRONT_PORCH + V_SYNC_PULSE + V_BACK_PORCH;
+
+    // Instantiate the VGA Synchronization module
+    VGA_SYNC vga_sync_inst (
+        .clock_50Mhz(pixel_clock_internal), // Pixel clock input
+        .horiz_sync_out(VGA_HS),            // Horizontal sync output
+        .vert_sync_out(VGA_VS),             // Vertical sync output
+        .video_on(video_on),                // Video active signal
+        .pixel_row(pixel_row),              // Row of the current pixel
+        .pixel_column(pixel_column)         // Column of the current pixel
+    );
+
+    // State transition logic
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin
+            current_state <= ABout;
+        end else begin
+            current_state <= next_state;
+        end
+    end
+
+    // VGA output logic (adjusted for timing)
+    always_comb begin
+        VGA_R = 8'b0;
+        VGA_G = 8'b0;
+        VGA_B = 8'b0;
+
+        if (video_on) begin
+            // Example: Draw a fixed rectangle to verify display
+            if ((pixel_row >= 50 && pixel_row <= 100) &&
+                (pixel_column >= 100 && pixel_column <= 300)) begin
+                VGA_R = 8'b11111111; // Red rectangle
+            end
+        end
+    end
+
+    // Next state logic and outputs
+    always_comb begin
+        // Default values
+        next_state = current_state;
+        DA0 = 1'b0;
+        DB0 = 1'b0;
+        Sw1 = 1'b0;
+        Sw2 = 1'b0;
+
+        case (current_state)
+            ABout: begin
+                DA0 = 1'b1;
+                DB0 = 1'b1;
+                if (S1 == 1'b1 && S2 == 1'b0) begin
+                    next_state = Ain;
+                end else if (S1 == 1'b0 && S2 == 1'b1) begin
+                    next_state = Bin;
+                end
+            end
+            
+            Ain: begin
+                DA0 = 1'b1;
+                if (S2 == 1'b1 && S4 == 1'b0) begin
+                    next_state = Bstop;
+                end
+            end
+
+            Bin: begin
+                DB0 = 1'b1;
+                Sw1 = 1'b1;
+                Sw2 = 1'b1;
+                if (S3 == 1'b1 && S1 == 1'b0) begin
+                    next_state = Astop;
+                end
+            end
+
+            Bstop: begin
+                DA0 = 1'b1;
+                if (S4 == 1'b1) begin
+                    next_state = ABout;
+                end
+            end
+
+            Astop: begin
+                DB0 = 1'b1;
+                Sw1 = 1'b1;
+                Sw2 = 1'b1;
+                if (S3 == 1'b0) begin
+                    next_state = ABout;
+                end
+            end
+
+            default: begin
+                next_state = ABout;
+            end
+        endcase
+    end
+
+endmodule

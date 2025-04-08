@@ -1,0 +1,2 @@
+Warning (10268): Verilog HDL information at train_game_logic.sv(176): always construct contains both blocking and non-blocking assignments File: C:/Users/830913/Downloads/projetoTrem-20250218T171805Z-001/projetoTrem/train_game_logic.sv Line: 176
+Warning (10268): Verilog HDL information at train_game_logic.sv(208): always construct contains both blocking and non-blocking assignments File: C:/Users/830913/Downloads/projetoTrem-20250218T171805Z-001/projetoTrem/train_game_logic.sv Line: 208
